@@ -178,25 +178,9 @@ The model demonstrates strong predictive performance with high accuracy and low 
 
 
 
-\---
-
-
-
-\## 📄 Documentation
-
-The complete IEEE-format report is available here:  
-
-👉 \[View Report](report/AQI\_Report.pdf)
-
-
-
-\---
-
-
-
 \## 👨‍💻 Author
 
-Aditya Kumar  
+Somya Vishnoi
 
 B.Tech Computer Science Engineering  
 
