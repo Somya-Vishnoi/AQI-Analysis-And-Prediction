@@ -27,9 +27,9 @@ print(data.tail())
 print(data.isna().sum())
 
 #Handles NA's in the data
-data["pollutant_min"].fillna(data["pollutant_min"].mean(), inplace=True)
-data["pollutant_max"].fillna(data["pollutant_max"].mean(), inplace=True)
-data["pollutant_avg"].fillna(data["pollutant_avg"].mean(), inplace=True)
+data["pollutant_min"] = data["pollutant_min"].fillna(data["pollutant_min"].mean())
+data["pollutant_max"] = data["pollutant_max"].fillna(data["pollutant_max"].mean())
+data["pollutant_avg"] = data["pollutant_avg"].fillna(data["pollutant_avg"].mean())
 print(data.info())
 
 # ---------------- Objective 1 ----------------
@@ -50,16 +50,38 @@ plt.show()
 # ---------------- Objective 2 ----------------
 #Identify the top cities with the highest average pollution levels
 
-city_pollution = data.groupby("city")["pollutant_avg"].mean().sort_values()
-print(city_pollution)
+# ---------------- Objective 2 ----------------
 
-#Bar Chart
-plt.figure(figsize=(12,6))
-city_pollution.tail(10).plot(kind='bar', color='khaki')
+# CLEAN DATA FIRST
+print("Before cleaning:")
+print(data[["city", "pollutant_avg"]].isna().sum())
+
+data = data.dropna(subset=["city", "pollutant_avg"])
+
+print("After cleaning:")
+print(data[["city", "pollutant_avg"]].isna().sum())
+
+# THEN group
+city_pollution = (
+    data.groupby("city")["pollutant_avg"]
+    .mean()
+    .dropna()
+    .sort_values(ascending=False)
+)
+
+print(city_pollution.head(10))
+
+# Plot
+plt.figure(figsize=(14,7))
+city_pollution.head(10).plot(kind='bar', color='khaki')
+
 plt.title("Top 10 Most Polluted Cities")
 plt.xlabel("City")
 plt.ylabel("Pollution Level")
-plt.xticks(rotation=45)
+
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+
 plt.show()
 
 # ---------------- Objective 3 ----------------
